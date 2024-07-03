@@ -39,12 +39,13 @@
 		"eslint": ">=8.0.0"
 	},
 	"dependencies": {
-		"@antfu/eslint-config": "^2.21.1",
+		"@antfu/eslint-config": "^2.21.2",
 		"@antfu/eslint-define-config": "1.23.0-2",
-		"@eslint-react/eslint-plugin": "^1.5.16",
+		"@eslint-react/eslint-plugin": "^1.5.18",
 		"@next/eslint-plugin-next": "^14.2.4",
+		"@typescript-eslint/parser": "^7.15.0",
 		"eslint-plugin-react": "^7.34.3",
-		"eslint-plugin-react-hooks": "^4.6.2",
+		"eslint-plugin-react-hooks": "^5.1.0-rc-9c6806964f-20240703",
 		"eslint-plugin-react-refresh": "^0.4.7",
 		"get-tsconfig": "^4.7.5",
 		"local-pkg": "^0.5.0"
@@ -52,11 +53,12 @@
 	"devDependencies": {
 		"@antfu/ni": "^0.21.12",
 		"@eslint-react/eslint-plugin": "^1.5.16",
+		"@eslint/compat": "^1.1.0",
 		"@noaignite-dk/eslint-flat-config": "workspace:*",
 		"@stylistic/eslint-plugin-migrate": "^1.8.1",
 		"@types/eslint": "^8.56.10",
 		"@types/fs-extra": "^11.0.4",
-		"@types/node": "^20.14.7",
+		"@types/node": "^20.14.9",
 		"@types/react": "^18.3.3",
 		"@types/react-dom": "^18.3.0",
 		"bumpp": "^9.4.1",
@@ -64,7 +66,7 @@
 		"eslint-flat-config-viewer": "^0.1.20",
 		"fast-glob": "^3.3.2",
 		"fs-extra": "^11.2.0",
-		"globals": "^15.0.0",
+		"globals": "^15.6.0",
 		"lint-staged": "^15.2.7",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
@@ -72,13 +74,15 @@
 		"simple-git-hooks": "^2.11.1",
 		"sucrase": "^3.35.0",
 		"tsup": "^8.1.0",
-		"typescript": "^5.4.3",
+		"typescript": "^5.5.2",
 		"unbuild": "^2.0.0",
-		"vitest": "^1.4.0"
+		"vitest": "^1.6.0"
 	},
 	"pnpm": {
-		"patchedDependencies": {
-			"@antfu/eslint-config@2.21.1": "patches/@antfu__eslint-config@2.21.1.patch"
+		"peerDependencyRules": {
+			"allowedVersions": {
+				"eslint": "9"
+			}
 		}
 	},
 	"simple-git-hooks": {

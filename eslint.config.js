@@ -11,6 +11,7 @@ const configure = jiti('./src').default;
 export default configure(
 	{
 		typescript: true,
+		react: false,
 		ignores: [
 			'fixtures',
 			'_fixtures',

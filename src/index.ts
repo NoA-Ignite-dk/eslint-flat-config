@@ -3,10 +3,10 @@ import type { FlatConfigComposer } from 'eslint-flat-config-utils';
 
 import { antfu } from '@antfu/eslint-config';
 import nextPlugin from '@next/eslint-plugin-next';
-import pluginReactHooks from 'eslint-plugin-react-hooks';
 import { isPackageExists } from 'local-pkg';
 
-import { getTsConfigPaths } from './utils';
+import { reactConfig } from './configs/react';
+import { getTsConfigFromOptions, getTsConfigPaths } from './utils';
 
 const reactPackages = [
 	'react',
@@ -70,43 +70,20 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 	} satisfies Partial<Rules>;
 
 	const customReactRules = {
-		'react-refresh/only-export-components': [
-			'warn',
-			{
-				allowConstantExport: false,
-				allowExportNames: [
-					...(enableNext
-						? [
-								'config',
-								'dynamic',
-								'generateStaticParams',
-								'metadata',
-								'generateMetadata',
-								'viewport',
-								'generateViewport',
-							]
-						: []),
-				],
-			},
-		],
 		'react/prefer-destructuring-assignment': ['off'],
 	} satisfies Partial<Rules>;
 
-	return antfu({
+	const response = antfu({
 		plugins: {
 			...(next
 				? {
 						'@next/next': nextPlugin,
 					}
 				: {}),
-			...react
-				? {
-						'react-hooks': pluginReactHooks,
-					}
-				: {},
 			...plugins,
 		},
-		react: extendOptions({ overrides: customReactRules }, react),
+		// We custom handle this to get around the dependency mess from antfu
+		react: false,
 		rules: {
 			...(next ? nextPlugin.configs.recommended.rules : {}),
 			...(next ? nextPlugin.configs['core-web-vitals'].rules : {}),
@@ -164,7 +141,18 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 		typescript: extendOptions({ overrides: typescriptRules }, typescript),
 		vue: false,
 		...remainingOptions,
-	})
+	});
+
+	if (react) {
+		const tsconfigPath = getTsConfigFromOptions(typescript);
+
+		response.append(reactConfig({
+			overrides: customReactRules,
+			tsconfigPath: tsconfigPath?.path,
+		}));
+	}
+
+	return response
 		.append(
 			...userConfigs,
 		);
