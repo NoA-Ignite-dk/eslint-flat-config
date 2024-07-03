@@ -91,19 +91,20 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 			...(next
 				? {
 						'@next/next/no-img-element': 'error',
+						'node/no-process-env': 'error',
 						'node/prefer-global/buffer': ['error', 'always'],
-						'node/prefer-global/process': ['error', 'always'],
+						'node/prefer-global/process': 'off',
 					}
 				: {}),
 			'perfectionist/sort-imports': ['error', {
 				'groups': [
+					'side-effect',
 					'builtin',
 					'type',
 					['external'],
 					['internal-type', 'internal'],
 					['parent-type', 'sibling-type', 'index-type'],
 					['parent', 'sibling', 'index'],
-					'side-effect',
 					'style',
 					'object',
 					'unknown',

@@ -86,6 +86,7 @@ export function reactConfig(
 							...(isUsingNext
 								? [
 										'config',
+										'dynamic',
 										'generateStaticParams',
 										'metadata',
 										'generateMetadata',
