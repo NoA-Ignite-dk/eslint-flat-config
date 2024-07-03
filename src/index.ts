@@ -2,6 +2,7 @@ import type { ConfigNames, OptionsConfig, OptionsOverrides, Rules, TypedFlatConf
 import type { FlatConfigComposer } from 'eslint-flat-config-utils';
 
 import { antfu } from '@antfu/eslint-config';
+import { fixupPluginRules } from '@eslint/compat';
 import nextPlugin from '@next/eslint-plugin-next';
 import { isPackageExists } from 'local-pkg';
 
@@ -77,7 +78,7 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 		plugins: {
 			...(next
 				? {
-						'@next/next': nextPlugin,
+						'@next/next': fixupPluginRules(nextPlugin),
 					}
 				: {}),
 			...plugins,
