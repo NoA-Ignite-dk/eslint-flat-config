@@ -19,17 +19,30 @@ runWithConfig('js', {
 	react: false,
 	jsx: false,
 });
-runWithConfig('all', {});
+runWithConfig('all', {
+	typescript: {
+		tsconfigPath: resolve('fixtures/tsconfig.json'),
+	},
+});
 runWithConfig('no-style', {
+	typescript: {
+		tsconfigPath: resolve('fixtures/tsconfig.json'),
+	},
 	stylistic: false,
 });
 runWithConfig('double-quotes', {
+	typescript: {
+		tsconfigPath: resolve('fixtures/tsconfig.json'),
+	},
 	stylistic: {
 		quotes: 'double',
 	},
 });
 
 runWithConfig('space-indent', {
+	typescript: {
+		tsconfigPath: resolve('fixtures/tsconfig.json'),
+	},
 	stylistic: {
 		indent: 2,
 	},
@@ -39,7 +52,9 @@ runWithConfig('space-indent', {
 runWithConfig(
 	'ts-override',
 	{
-		typescript: true,
+		typescript: {
+			tsconfigPath: resolve('fixtures/tsconfig.json'),
+		},
 		react: false,
 	},
 	{
@@ -62,7 +77,7 @@ function runWithConfig(name: string, configs: OptionsConfig, ...items: TypedFlat
 		});
 		await fs.writeFile(join(target, 'eslint.config.js'), `
 // @eslint-disable
-import configure from '@jdpnielsen/eslint-flat-config'
+import configure from '@noaignite-dk/eslint-flat-config'
 
 export default configure(
   ${JSON.stringify(configs)},
