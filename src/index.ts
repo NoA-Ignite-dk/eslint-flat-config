@@ -63,9 +63,6 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 	} satisfies Partial<Rules>;
 
 	const typescriptRules = {
-		'ts/ban-types': ['error', {
-			extendDefaults: true,
-		}],
 		'ts/consistent-type-definitions': ['off'],
 		'ts/no-explicit-any': ['warn'],
 	} satisfies Partial<Rules>;
