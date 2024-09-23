@@ -94,7 +94,7 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 					}
 				: {}),
 			'perfectionist/sort-imports': ['error', {
-				'groups': [
+				groups: [
 					'side-effect',
 					'builtin',
 					'type',
@@ -106,20 +106,20 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 					'object',
 					'unknown',
 				],
-				'internal-pattern': tsConfigPaths,
-				'newlines-between': 'always',
-				'order': 'asc',
-				'type': 'natural',
+				internalPattern: tsConfigPaths,
+				newlinesBetween: 'always',
+				order: 'asc',
+				type: 'natural',
 			}],
 			'perfectionist/sort-jsx-props': [
 				'error',
 				{
-					'custom-groups': {
+					customGroups: {
 						ids: ['key', 'id'],
 					},
-					'groups': ['ids', 'multiline', 'unknown', 'shorthand'],
-					'order': 'asc',
-					'type': 'natural',
+					groups: ['ids', 'multiline', 'unknown', 'shorthand'],
+					order: 'asc',
+					type: 'natural',
 				},
 			],
 			'unicorn/template-indent': ['warn', {

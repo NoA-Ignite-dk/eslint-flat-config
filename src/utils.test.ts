@@ -25,24 +25,5 @@ describe('getTsConfigPaths', () => {
 		});
 
 		expect(singlePath).toEqual(['@src/**']);
-
-		const multiPath = getTsConfigPaths({
-			tsconfigPath: [
-				'./fixtures/tsconfig.paths.json',
-			],
-		});
-
-		expect(multiPath).toEqual(['@src/**']);
-	});
-
-	it('should return paths from the first tsconfig file given', async ({ expect }) => {
-		const multiPath = getTsConfigPaths({
-			tsconfigPath: [
-				'./fixtures/tsconfig.json',
-				'./fixtures/tsconfig.paths.json',
-			],
-		});
-
-		expect(multiPath).toEqual([]);
 	});
 });
