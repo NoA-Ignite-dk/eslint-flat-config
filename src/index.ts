@@ -64,6 +64,11 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 
 	const typescriptRules = {
 		'ts/consistent-type-definitions': ['off'],
+		'ts/consistent-type-imports': ['error', {
+			disallowTypeAnnotations: false,
+			fixStyle: 'inline-type-imports',
+			prefer: 'type-imports',
+		}],
 		'ts/no-explicit-any': ['warn'],
 	} satisfies Partial<Rules>;
 
@@ -100,8 +105,8 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 					'type',
 					['external'],
 					['internal-type', 'internal'],
-					['parent-type', 'sibling-type', 'index-type'],
-					['parent', 'sibling', 'index'],
+					['parent-type', 'parent'],
+					['sibling-type', 'sibling', 'index-type', 'index'],
 					'style',
 					'object',
 					'unknown',
