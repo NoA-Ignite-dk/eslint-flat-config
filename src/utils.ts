@@ -31,7 +31,7 @@ export function getTsConfigPaths(typescriptOptions: boolean | OptionsTypeScriptW
 
 	if (tsconfig && tsconfig.config.compilerOptions?.paths) {
 		return Object.keys(tsconfig.config.compilerOptions.paths)
-			.map((i) => i.replace('/*', '/**'));
+			.map((i) => `^${i.replace('/*', '/.*')}`);
 	}
 
 	return [];

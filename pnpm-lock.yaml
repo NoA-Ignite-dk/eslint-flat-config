@@ -79,7 +79,7 @@ importers:
         specifier: ^9.9.0
         version: 9.9.0
       eslint:
-        specifier: ^9.16.0
+        specifier: ^9.10.0
         version: 9.16.0
       eslint-flat-config-viewer:
         specifier: ^0.1.20

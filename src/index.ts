@@ -120,7 +120,7 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 				'error',
 				{
 					customGroups: {
-						ids: ['key', 'id'],
+						ids: ['^key$', '^id$'],
 					},
 					groups: ['ids', 'multiline', 'unknown', 'shorthand'],
 					order: 'asc',
