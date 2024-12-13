@@ -24,6 +24,6 @@ describe('getTsConfigPaths', () => {
 			tsconfigPath: './fixtures/tsconfig.paths.json',
 		});
 
-		expect(singlePath).toEqual(['@src/**']);
+		expect(singlePath).toEqual(['^@src/.*']);
 	});
 });
