@@ -3,5 +3,5 @@
 	"extends": [
 		"github>sanity-io/renovate-config"
 	],
-	"ignoreDeps": ["undici", "node", "change-case", "@types/react", "@jdpnielsen/uda-to-typescript"]
+	"ignoreDeps": ["node"]
 }
