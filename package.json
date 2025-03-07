@@ -57,7 +57,7 @@
 		"@eslint/compat": "^1.2.4",
 		"@noaignite-dk/eslint-flat-config": "workspace:*",
 		"@stylistic/eslint-plugin-migrate": "^2.12.1",
-		"@types/eslint": "^8.56.12",
+		"@types/eslint": "^9.6.1",
 		"@types/fs-extra": "^11.0.4",
 		"@types/node": "^20.17.10",
 		"@types/react": "^19.0.1",
