@@ -1,17 +1,18 @@
 import styleMigrate from '@stylistic/eslint-plugin-migrate';
-import JITI from 'jiti';
 
-const jiti = JITI(import.meta.url);
-
-/**
- * @type {import('./src').default}
- */
-const configure = jiti('./src').default;
+import configure from './src';
 
 export default configure(
 	{
-		typescript: true,
-		react: false,
+		react: true,
+		typescript: {
+			tsconfigPath: './tsconfig.json',
+		},
+		formatters: true,
+		next: true,
+		type: 'lib',
+	},
+	{
 		ignores: [
 			'fixtures',
 			'_fixtures',

@@ -1,10 +1,10 @@
+import fs from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
 import type { OptionsConfig, TypedFlatConfigItem } from '@antfu/eslint-config';
 
 import { execa } from 'execa';
-import fg from 'fast-glob';
-import fs from 'fs-extra';
+import { glob } from 'tinyglobby';
 import { afterAll, beforeAll, it } from 'vitest';
 
 beforeAll(async () => {
@@ -21,18 +21,18 @@ runWithConfig('js', {
 });
 runWithConfig('all', {
 	typescript: {
-		tsconfigPath: resolve('fixtures/tsconfig.json'),
+		tsconfigPath: './tsconfig.json',
 	},
 });
 runWithConfig('no-style', {
 	typescript: {
-		tsconfigPath: resolve('fixtures/tsconfig.json'),
+		tsconfigPath: './tsconfig.json',
 	},
 	stylistic: false,
 });
 runWithConfig('double-quotes', {
 	typescript: {
-		tsconfigPath: resolve('fixtures/tsconfig.json'),
+		tsconfigPath: './tsconfig.json',
 	},
 	stylistic: {
 		quotes: 'double',
@@ -41,7 +41,7 @@ runWithConfig('double-quotes', {
 
 runWithConfig('space-indent', {
 	typescript: {
-		tsconfigPath: resolve('fixtures/tsconfig.json'),
+		tsconfigPath: './tsconfig.json',
 	},
 	stylistic: {
 		indent: 2,
@@ -53,7 +53,7 @@ runWithConfig(
 	'ts-override',
 	{
 		typescript: {
-			tsconfigPath: resolve('fixtures/tsconfig.json'),
+			tsconfigPath: './tsconfig.json',
 		},
 		react: false,
 	},
@@ -70,8 +70,13 @@ function runWithConfig(name: string, configs: OptionsConfig, ...items: TypedFlat
 		const output = resolve('fixtures/output', name);
 		const target = resolve('_fixtures', name);
 
-		await fs.copy(from, target, {
+		await fs.cp(from, target, {
+			recursive: true,
 			filter: (src) => {
+				if (src.includes('tsconfig.json') && !configs.typescript) {
+					return false;
+				}
+
 				return !src.includes('node_modules');
 			},
 		});
@@ -90,7 +95,7 @@ export default configure(
 			stdio: 'pipe',
 		});
 
-		const files = await fg('**/*', {
+		const files = await glob('**/*', {
 			ignore: [
 				'node_modules',
 				'eslint.config.js',
@@ -103,8 +108,7 @@ export default configure(
 			const source = await fs.readFile(join(from, file), 'utf-8');
 			const outputPath = join(output, file);
 			if (content === source) {
-				if (fs.existsSync(outputPath))
-					fs.remove(outputPath);
+				await fs.rm(outputPath, { force: true });
 				return;
 			}
 			await expect.soft(content).toMatchFileSnapshot(join(output, file));

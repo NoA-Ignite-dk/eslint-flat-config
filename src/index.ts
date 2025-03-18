@@ -1,7 +1,7 @@
-import type { ConfigNames, OptionsConfig, OptionsOverrides, Rules, TypedFlatConfigItem } from '@antfu/eslint-config';
+import type { ConfigNames, OptionsConfig, OptionsOverrides, OptionsTypescript, Rules, TypedFlatConfigItem } from '@antfu/eslint-config';
 import type { FlatConfigComposer } from 'eslint-flat-config-utils';
 
-import { antfu } from '@antfu/eslint-config';
+import { antfu, resolveSubOptions } from '@antfu/eslint-config';
 import { fixupPluginRules } from '@eslint/compat';
 import nextPlugin from '@next/eslint-plugin-next';
 import { isPackageExists } from 'local-pkg';
@@ -27,7 +27,7 @@ export type ConfigureOptions = OptionsConfig & {
 	next?: boolean;
 };
 
-export default function configure(options?: ConfigureOptions & TypedFlatConfigItem, ...userConfigs: (TypedFlatConfigItem | TypedFlatConfigItem[])[]): FlatConfigComposer<TypedFlatConfigItem, ConfigNames> {
+export default async function configure(options: ConfigureOptions & TypedFlatConfigItem = {}, ...userConfigs: (TypedFlatConfigItem | TypedFlatConfigItem[])[]): Promise<FlatConfigComposer<TypedFlatConfigItem, ConfigNames>> {
 	const enableReact = reactPackages.some((i) => isPackageExists(i));
 	const enableNext = nextPackages.some((i) => isPackageExists(i));
 	const enableTypescript = isPackageExists('typescript');
@@ -40,12 +40,9 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 		stylistic = true,
 		typescript = enableTypescript,
 		...remainingOptions
-	} = options || {
-		next: enableNext,
-		react: enableReact,
-		stylistic: true,
-		typescript: enableTypescript,
-	};
+	} = options;
+
+	const typescriptOptions = resolveSubOptions(options, 'typescript');
 
 	const indent = stylistic && typeof stylistic !== 'boolean'
 		? typeof stylistic?.indent === 'number'
@@ -70,6 +67,10 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 			prefer: 'type-imports',
 		}],
 		'ts/no-explicit-any': ['warn'],
+	} satisfies Partial<Rules>;
+
+	const typescriptTypeawareRules = {
+		'ts/strict-boolean-expressions': ['off'],
 	} satisfies Partial<Rules>;
 
 	const customReactRules = {
@@ -142,7 +143,7 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 			...rules,
 		},
 		stylistic: extendOptions({ indent: 'tab', overrides: customStyleRules, quotes: 'single', semi: true }, stylistic),
-		typescript: extendOptions({ overrides: typescriptRules }, typescript),
+		typescript: extendOptions<OptionsTypescript>({ ...typescriptOptions, overrides: typescriptRules, overridesTypeAware: typescriptTypeawareRules }, typescript),
 		vue: false,
 		...remainingOptions,
 	});
@@ -150,10 +151,13 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 	if (react) {
 		const tsconfigPath = getTsConfigFromOptions(typescript);
 
-		response.append(reactConfig({
+		const reactConfigOptions = reactConfig({
+			...typescriptOptions,
 			overrides: customReactRules,
 			tsconfigPath: tsconfigPath?.path,
-		}));
+		});
+
+		await response.append(reactConfigOptions);
 	}
 
 	return response
@@ -162,7 +166,7 @@ export default function configure(options?: ConfigureOptions & TypedFlatConfigIt
 		);
 }
 
-function extendOptions<T extends OptionsOverrides>(defaultOptions: T, input: boolean | T | undefined): T | false {
+function extendOptions<T extends OptionsOverrides | OptionsTypescript>(defaultOptions: T, input: boolean | OptionsOverrides | T | undefined): T | false {
 	if (typeof input === 'boolean') {
 		return input ? defaultOptions : false;
 	}

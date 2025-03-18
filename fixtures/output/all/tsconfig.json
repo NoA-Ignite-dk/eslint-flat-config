@@ -1,17 +1,10 @@
 {
 	"compilerOptions": {
 		"target": "ESNext",
-		"baseUrl": ".",
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
 		"strict": true,
-		"esModuleInterop": true,
+		"skipDefaultLibCheck": true,
 		"skipLibCheck": true
-	},
-	"include": [
-		"**/*.ts"
-	],
-	"exclude": [
-		"./fixtures/**/*.*"
-	]
+	}
 }

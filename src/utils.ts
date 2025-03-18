@@ -14,13 +14,8 @@ export function getTsConfigFromOptions(typescriptOptions: boolean | OptionsTypeS
 		return getTsconfig();
 	} else if (typeof typescriptOptions === 'object' && ('tsconfigPath' in typescriptOptions) && typescriptOptions?.tsconfigPath) {
 		const tsconfigPath = typescriptOptions.tsconfigPath;
-		if (Array.isArray(tsconfigPath)) {
-			const tsPath = path.parse(tsconfigPath[0]);
-			return getTsconfig(tsconfigPath[0], tsPath.name + tsPath.ext);
-		} else {
-			const tsPath = path.parse(tsconfigPath);
-			return getTsconfig(tsconfigPath, tsPath.name + tsPath.ext);
-		}
+		const tsPath = path.parse(tsconfigPath);
+		return getTsconfig(tsconfigPath, tsPath.name + tsPath.ext);
 	}
 
 	return null;
