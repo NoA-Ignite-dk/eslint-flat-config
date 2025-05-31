@@ -60,6 +60,7 @@ export default async function configure(options: ConfigureOptions & TypedFlatCon
 	} satisfies Partial<Rules>;
 
 	const typescriptRules = {
+		'import/consistent-type-specifier-style': ['off'],
 		'ts/consistent-type-definitions': ['off'],
 		'ts/consistent-type-imports': ['error', {
 			disallowTypeAnnotations: false,

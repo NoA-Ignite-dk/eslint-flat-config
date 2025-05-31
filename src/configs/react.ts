@@ -33,6 +33,10 @@ export function reactConfig(
 
 	const typeAwareRules: TypedFlatConfigItem['rules'] = {
 		'react/no-leaked-conditional-rendering': 'warn',
+		'ts/no-misused-promises': ['warn', {
+			checksVoidReturn: false,
+		}],
+		'ts/promise-function-async': ['off'],
 	};
 
 	const isAllowConstantExport = ReactRefreshAllowConstantExportPackages.some((i) => isPackageExists(i));
