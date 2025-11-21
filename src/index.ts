@@ -2,7 +2,6 @@ import type { ConfigNames, OptionsConfig, OptionsOverrides, OptionsTypescript, R
 import type { FlatConfigComposer } from 'eslint-flat-config-utils';
 
 import { antfu, resolveSubOptions } from '@antfu/eslint-config';
-import { fixupPluginRules } from '@eslint/compat';
 import nextPlugin from '@next/eslint-plugin-next';
 import { isPackageExists } from 'local-pkg';
 
@@ -18,14 +17,7 @@ const nextPackages = [
 	'next',
 ];
 
-export type ConfigureOptions = OptionsConfig & {
-	/**
-	 * Enable next rules.
-	 *
-	 * @default true
-	 */
-	next?: boolean;
-};
+export type ConfigureOptions = OptionsConfig;
 
 export default async function configure(options: ConfigureOptions & TypedFlatConfigItem = {}, ...userConfigs: (TypedFlatConfigItem | TypedFlatConfigItem[])[]): Promise<FlatConfigComposer<TypedFlatConfigItem, ConfigNames>> {
 	const enableReact = reactPackages.some((i) => isPackageExists(i));
@@ -33,7 +25,7 @@ export default async function configure(options: ConfigureOptions & TypedFlatCon
 	const enableTypescript = isPackageExists('typescript');
 
 	const {
-		next = enableNext,
+		nextjs = enableNext,
 		plugins = {},
 		react = enableReact,
 		rules = {},
@@ -79,20 +71,16 @@ export default async function configure(options: ConfigureOptions & TypedFlatCon
 	} satisfies Partial<Rules>;
 
 	const response = antfu({
+		nextjs,
 		plugins: {
-			...(next
-				? {
-						'@next/next': fixupPluginRules(nextPlugin),
-					}
-				: {}),
 			...plugins,
 		},
 		// We custom handle this to get around the dependency mess from antfu
 		react: false,
 		rules: {
-			...(next ? nextPlugin.configs.recommended.rules : {}),
-			...(next ? nextPlugin.configs['core-web-vitals'].rules : {}),
-			...(next
+			...(nextjs ? nextPlugin.configs.recommended.rules : {}),
+			...(nextjs ? nextPlugin.configs['core-web-vitals'].rules : {}),
+			...(nextjs
 				? {
 						'@next/next/no-img-element': 'error',
 						'node/no-process-env': 'error',

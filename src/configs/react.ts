@@ -32,6 +32,12 @@ export function reactConfig(
 	const isTypeAware = !!tsconfigPath;
 
 	const typeAwareRules: TypedFlatConfigItem['rules'] = {
+		/* Disables rules that are already handled by TypeScript */
+		'react/jsx-no-duplicate-props': 'off',
+		'react/jsx-no-undef': 'off',
+		'react/jsx-uses-react': 'off',
+		'react/jsx-uses-vars': 'off',
+
 		'react/no-leaked-conditional-rendering': 'warn',
 		'ts/no-misused-promises': ['warn', {
 			checksVoidReturn: false,
@@ -42,7 +48,7 @@ export function reactConfig(
 	const isAllowConstantExport = ReactRefreshAllowConstantExportPackages.some((i) => isPackageExists(i));
 	const isUsingNext = NextJsPackages.some((i) => isPackageExists(i));
 
-	const plugins = pluginReact.configs.all.plugins;
+	const plugins = (pluginReact.configs.all as { plugins: Record<string, unknown> }).plugins;
 
 	return [
 		{
@@ -51,7 +57,6 @@ export function reactConfig(
 				'react': plugins['@eslint-react'],
 				'react-dom': plugins['@eslint-react/dom'],
 				'react-hooks': pluginReactHooks,
-				'react-hooks-extra': plugins['@eslint-react/hooks-extra'],
 				'react-naming-convention': plugins['@eslint-react/naming-convention'],
 				'react-refresh': pluginReactRefresh,
 				'react-web-api': plugins['@eslint-react/web-api'],
@@ -69,68 +74,74 @@ export function reactConfig(
 			},
 			name: 'antfu/react/rules',
 			rules: {
-				// recommended rules from @eslint-react/dom
+				// recommended rules from @eslint-react/dom https://eslint-react.xyz/docs/rules/overview#dom-rules
 				'react-dom/no-dangerously-set-innerhtml': 'warn',
 				'react-dom/no-dangerously-set-innerhtml-with-children': 'error',
 				'react-dom/no-find-dom-node': 'error',
+				'react-dom/no-flush-sync': 'error',
+				'react-dom/no-hydrate': 'error',
 				'react-dom/no-missing-button-type': 'warn',
 				'react-dom/no-missing-iframe-sandbox': 'warn',
 				'react-dom/no-namespace': 'error',
+				'react-dom/no-render': 'error',
 				'react-dom/no-render-return-value': 'error',
 				'react-dom/no-script-url': 'warn',
 				'react-dom/no-unsafe-iframe-sandbox': 'warn',
 				'react-dom/no-unsafe-target-blank': 'warn',
+				'react-dom/no-use-form-state': 'error',
 				'react-dom/no-void-elements-with-children': 'warn',
 
-				// recommended rules from @eslint-react/hooks-extra
-				'react-hooks-extra/prefer-use-state-lazy-initialization': 'warn',
-
-				// recommended rules react-hooks
-				'react-hooks/exhaustive-deps': 'warn',
-				'react-hooks/rules-of-hooks': 'error',
+				// recommended rules eslint-plugin-react-hooks https://github.com/facebook/react/tree/main/packages/eslint-plugin-react-hooks/src/rules
+				...pluginReactHooks.configs.recommended.rules,
 
 				// react refresh
 				'react-refresh/only-export-components': [
 					'warn',
 					{
 						allowConstantExport: isAllowConstantExport,
-						allowExportNames: [
-							...(isUsingNext
-								? [
-										'dynamic',
-										'dynamicParams',
-										'revalidate',
-										'fetchCache',
-										'runtime',
-										'preferredRegion',
-										'maxDuration',
-										'config',
-										'generateStaticParams',
-										'metadata',
-										'generateMetadata',
-										'viewport',
-										'generateViewport',
-									]
-								: []),
-						],
+						allowExportNames: isUsingNext
+							? [
+									'dynamic',
+									'dynamicParams',
+									'revalidate',
+									'fetchCache',
+									'runtime',
+									'preferredRegion',
+									'maxDuration',
+									'config',
+									'generateStaticParams',
+									'metadata',
+									'generateMetadata',
+									'viewport',
+									'generateViewport',
+								]
+							: [],
 					},
 				],
-				// recommended rules from @eslint-react/web-api
+				// recommended rules from @eslint-react/web-api https://eslint-react.xyz/docs/rules/overview#web-api-rules
 				'react-web-api/no-leaked-event-listener': 'warn',
 				'react-web-api/no-leaked-interval': 'warn',
 				'react-web-api/no-leaked-resize-observer': 'warn',
 				'react-web-api/no-leaked-timeout': 'warn',
 
-				// recommended rules from @eslint-react
+				'react/jsx-no-comment-textnodes': 'warn',
+				'react/jsx-no-duplicate-props': 'warn',
+				// Strict rules https://github.com/Rel1cx/eslint-react/blob/main/packages/plugins/eslint-plugin-react-x/src/configs/strict.ts
+				'react/jsx-no-iife': 'error',
+				'react/jsx-shorthand-boolean': 'warn',
+				'react/jsx-shorthand-fragment': 'warn',
+				'react/jsx-uses-vars': 'warn',
+				// recommended rules from @eslint-react https://eslint-react.xyz/docs/rules/overview#core-rules
 				'react/no-access-state-in-setstate': 'error',
 				'react/no-array-index-key': 'warn',
 				'react/no-children-count': 'warn',
 				'react/no-children-for-each': 'warn',
 				'react/no-children-map': 'warn',
 				'react/no-children-only': 'warn',
+				'react/no-children-prop': 'error',
 				'react/no-children-to-array': 'warn',
+				'react/no-class-component': 'error',
 				'react/no-clone-element': 'warn',
-				'react/no-comment-textnodes': 'warn',
 				'react/no-component-will-mount': 'error',
 				'react/no-component-will-receive-props': 'error',
 				'react/no-component-will-update': 'error',
@@ -138,11 +149,11 @@ export function reactConfig(
 				'react/no-create-ref': 'error',
 				'react/no-default-props': 'error',
 				'react/no-direct-mutation-state': 'error',
-				'react/no-duplicate-jsx-props': 'warn',
 				'react/no-duplicate-key': 'error',
 				'react/no-forward-ref': 'warn',
 				'react/no-implicit-key': 'warn',
 				'react/no-missing-key': 'error',
+				'react/no-misused-capture-owner-stack': 'error',
 				'react/no-nested-component-definitions': 'error',
 				'react/no-prop-types': 'error',
 				'react/no-redundant-should-component-update': 'error',
@@ -150,18 +161,23 @@ export function reactConfig(
 				'react/no-set-state-in-component-did-update': 'warn',
 				'react/no-set-state-in-component-will-update': 'warn',
 				'react/no-string-refs': 'error',
+				'react/no-unnecessary-key': 'warn',
+				'react/no-unnecessary-use-callback': 'warn',
+				'react/no-unnecessary-use-memo': 'warn',
+				'react/no-unnecessary-use-prefix': 'warn',
 				'react/no-unsafe-component-will-mount': 'warn',
 				'react/no-unsafe-component-will-receive-props': 'warn',
+
 				'react/no-unsafe-component-will-update': 'warn',
+
 				'react/no-unstable-context-value': 'warn',
 				'react/no-unstable-default-props': 'warn',
 				'react/no-unused-class-component-members': 'warn',
 				'react/no-unused-state': 'warn',
+				'react/no-use-context': 'warn',
 				'react/no-useless-forward-ref': 'warn',
 				'react/prefer-destructuring-assignment': 'warn',
-				'react/prefer-shorthand-boolean': 'warn',
-				'react/prefer-shorthand-fragment': 'warn',
-				'react/use-jsx-vars': 'warn',
+				'react/prefer-use-state-lazy-initialization': 'warn',
 
 				// overrides
 				...overrides,
