@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@antfu/eslint-config':
         specifier: ^6.2.0
-        version: 6.2.0(@eslint-react/eslint-plugin@2.3.7)(@next/eslint-plugin-next@15.5.6)(@vue/compiler-sfc@3.5.13)(eslint-plugin-format@1.0.2)(eslint-plugin-react-hooks@7.0.1)(eslint-plugin-react-refresh@0.4.24)(eslint@9.39.1)(typescript@5.9.3)(vitest@3.2.4)
+        version: 6.2.0(@eslint-react/eslint-plugin@2.3.7)(@next/eslint-plugin-next@16.3.4)(@vue/compiler-sfc@3.5.13)(eslint-plugin-format@1.0.2)(eslint-plugin-react-hooks@7.0.1)(eslint-plugin-react-refresh@0.4.24)(eslint@9.39.1)(typescript@5.9.3)(vitest@3.2.4)
       '@antfu/eslint-define-config':
         specifier: 1.23.0-2
         version: 1.23.0-2
@@ -18,8 +18,8 @@ importers:
         specifier: ^2.0.1
         version: 2.3.7(eslint@9.39.1)(typescript@5.9.3)
       '@next/eslint-plugin-next':
-        specifier: ^15.5.6
-        version: 15.5.6
+        specifier: ^16.3.4
+        version: 16.3.4(eslint@9.39.1)
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.47.0
         version: 8.47.0(@typescript-eslint/parser@8.47.0)(eslint@9.39.1)(typescript@5.9.3)
@@ -127,7 +127,7 @@ packages:
       '@jridgewell/gen-mapping': 0.3.8
       '@jridgewell/trace-mapping': 0.3.25
 
-  /@antfu/eslint-config@6.2.0(@eslint-react/eslint-plugin@2.3.7)(@next/eslint-plugin-next@15.5.6)(@vue/compiler-sfc@3.5.13)(eslint-plugin-format@1.0.2)(eslint-plugin-react-hooks@7.0.1)(eslint-plugin-react-refresh@0.4.24)(eslint@9.39.1)(typescript@5.9.3)(vitest@3.2.4):
+  /@antfu/eslint-config@6.2.0(@eslint-react/eslint-plugin@2.3.7)(@next/eslint-plugin-next@16.3.4)(@vue/compiler-sfc@3.5.13)(eslint-plugin-format@1.0.2)(eslint-plugin-react-hooks@7.0.1)(eslint-plugin-react-refresh@0.4.24)(eslint@9.39.1)(typescript@5.9.3)(vitest@3.2.4):
     resolution: {integrity: sha512-ksasd+mJk441HHodwPh3Nhmwo9jSHUmgQyfTxMQM05U7SjDS0fy2KnXnPx0Vhc/CqKiJnx8wGpQCCJibyASX9Q==}
     hasBin: true
     peerDependencies:
@@ -187,7 +187,7 @@ packages:
       '@eslint-community/eslint-plugin-eslint-comments': 4.5.0(eslint@9.39.1)
       '@eslint-react/eslint-plugin': 2.3.7(eslint@9.39.1)(typescript@5.9.3)
       '@eslint/markdown': 7.5.1
-      '@next/eslint-plugin-next': 15.5.6
+      '@next/eslint-plugin-next': 16.3.4(eslint@9.39.1)
       '@stylistic/eslint-plugin': 5.6.1(eslint@9.39.1)
       '@typescript-eslint/eslint-plugin': 8.47.0(@typescript-eslint/parser@8.47.0)(eslint@9.39.1)(typescript@5.9.3)
       '@typescript-eslint/parser': 8.47.0(eslint@9.39.1)(typescript@5.9.3)
@@ -1329,6 +1329,16 @@ packages:
       eslint: 9.39.1(jiti@2.6.1)
       eslint-visitor-keys: 3.4.3
 
+  /@eslint-community/eslint-utils@4.9.1(eslint@9.39.1):
+    resolution: {integrity: sha512-phrYmNiYppR7znFEdqgfWHXR6NCkZEK7hwWDHZUjit/2/U0r6XvkDl0SYnoM51Hq7FhCGdLDT6zxCCOY1hexsQ==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
+    dependencies:
+      eslint: 9.39.1(jiti@2.6.1)
+      eslint-visitor-keys: 3.4.3
+    dev: false
+
   /@eslint-community/regexpp@4.12.1:
     resolution: {integrity: sha512-CCZCDJuduB9OUkFkY2IgppNZMi2lBQgD2qzwXkEia16cge2pijY/aXi96CJMquDMn3nJdlPV1A5KrJEXwfLNzQ==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
@@ -1614,10 +1624,13 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  /@next/eslint-plugin-next@15.5.6:
-    resolution: {integrity: sha512-YxDvsT2fwy1j5gMqk3ppXlsgDopHnkM4BoxSVASbvvgh5zgsK8lvWerDzPip8k3WVzsTZ1O7A7si1KNfN4OZfQ==}
+  /@next/eslint-plugin-next@16.3.4(eslint@9.39.1):
+    resolution: {integrity: sha512-szW9y2Aumu4z88YXfTzcFsgUAg2k64uzbtcO5L9f1AKS4w/GUKJcbFllRflROVyNPgJtGOnvNxiyp3v6b+prIA==}
     dependencies:
+      '@eslint-community/eslint-utils': 4.9.1(eslint@9.39.1)
       fast-glob: 3.3.1
+    transitivePeerDependencies:
+      - eslint
     dev: false
 
   /@nodelib/fs.scandir@2.1.5:
